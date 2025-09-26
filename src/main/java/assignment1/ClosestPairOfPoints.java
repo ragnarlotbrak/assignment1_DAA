@@ -1,0 +1,90 @@
+package assignment1;
+import java.util.*;
+
+public class ClosestPairOfPoints {
+
+    public static class Point {
+        double x, y;
+        public Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+        @Override
+        public String toString() {
+            return "(" + x + ", " + y + ")";
+        }
+    }
+
+    public static class Result {
+        Point p1, p2;
+        double dist;
+        Result(Point p1, Point p2, double dist) {
+            this.p1 = p1;
+            this.p2 = p2;
+            this.dist = dist;
+        }
+    }
+
+    private static double dist(Point a, Point b) {
+        double dx = a.x - b.x;
+        double dy = a.y - b.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    private static Result bruteForce(Point[] points, int left, int right) {
+        double min = Double.POSITIVE_INFINITY;
+        Point p1 = null, p2 = null;
+        for (int i = left; i < right; i++) {
+            for (int j = i + 1; j <= right; j++) {
+                double d = dist(points[i], points[j]);
+                if (d < min) {
+                    min = d;
+                    p1 = points[i];
+                    p2 = points[j];
+                }
+            }
+        }
+        return new Result(p1, p2, min);
+    }
+
+    private static Result stripClosest(List<Point> strip, double d, Result best) {
+        strip.sort(Comparator.comparingDouble(p -> p.y));
+        for (int i = 0; i < strip.size(); i++) {
+            for (int j = i + 1; j < strip.size() && (strip.get(j).y - strip.get(i).y) < best.dist; j++) {
+                double dist = dist(strip.get(i), strip.get(j));
+                if (dist < best.dist) {
+                    best = new Result(strip.get(i), strip.get(j), dist);
+                }
+            }
+        }
+        return best;
+    }
+
+    private static Result closestUtil(Point[] points, int left, int right) {
+        if (right - left <= 3) {
+            return bruteForce(points, left, right);
+        }
+
+        int mid = (left + right) / 2;
+        Point midPoint = points[mid];
+
+        Result leftRes = closestUtil(points, left, mid);
+        Result rightRes = closestUtil(points, mid + 1, right);
+
+        Result best = (leftRes.dist < rightRes.dist) ? leftRes : rightRes;
+
+        List<Point> strip = new ArrayList<>();
+        for (int i = left; i <= right; i++) {
+            if (Math.abs(points[i].x - midPoint.x) < best.dist) {
+                strip.add(points[i]);
+            }
+        }
+
+        return stripClosest(strip, best.dist, best);
+    }
+
+    public static Result closest(Point[] points) {
+        Arrays.sort(points, Comparator.comparingDouble(p -> p.x));
+        return closestUtil(points, 0, points.length - 1);
+    }
+}

@@ -1,3 +1,5 @@
+package assignment1;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -50,6 +52,23 @@ public class Main {
 
         System.out.println("\nArray: " + Arrays.toString(arr));
         System.out.println("\n" + (k + 1) + "-th element is: " + kthElement);
+
+
+        ClosestPairOfPoints cpp = new ClosestPairOfPoints();
+
+        ClosestPairOfPoints.Point[] points = {
+                new ClosestPairOfPoints.Point(2, 3),
+                new ClosestPairOfPoints.Point(12, 30),
+                new ClosestPairOfPoints.Point(40, 50),
+                new ClosestPairOfPoints.Point(5, 1),
+                new ClosestPairOfPoints.Point(12, 10),
+                new ClosestPairOfPoints.Point(3, 4)
+        };
+
+        ClosestPairOfPoints.Result result = ClosestPairOfPoints.closest(points);
+
+        System.out.println("\nClosest pair: " + result.p1 + " and " + result.p2);
+        System.out.println("Distance = " + result.dist);
     }
 }
 
