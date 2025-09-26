@@ -1,3 +1,5 @@
+package assignment1;
+
 public class MergeSort {
 
     private static final int CUTOFF = 10;
