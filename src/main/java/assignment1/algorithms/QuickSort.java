@@ -1,9 +1,9 @@
-package assignment1;
+package assignment1.algorithms;
 
+import assignment1.util.Swap;
 import java.util.Random;
 
 public class QuickSort {
-
     private final Random rand = new Random();
 
     public void quickSort(int[] arr) {
@@ -12,17 +12,15 @@ public class QuickSort {
 
     private void quickSort(int[] arr, int low, int high) {
         while (low < high) {
-
             int pivotIndex = low + rand.nextInt(high - low + 1);
             int pivot = arr[pivotIndex];
-
-
             int i = low, j = high;
+
             while (i <= j) {
                 while (arr[i] < pivot) i++;
                 while (arr[j] > pivot) j--;
                 if (i <= j) {
-                    swap(arr, i, j);
+                    Swap.swap(arr, i, j);
                     i++;
                     j--;
                 }
@@ -36,11 +34,5 @@ public class QuickSort {
                 high = j;
             }
         }
-    }
-
-    private void swap(int[] arr, int i, int j) {
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
     }
 }
