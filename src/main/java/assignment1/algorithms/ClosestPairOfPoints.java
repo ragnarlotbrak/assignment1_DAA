@@ -1,4 +1,4 @@
-package assignment1;
+package assignment1.algorithms;
 import java.util.*;
 
 public class ClosestPairOfPoints {
@@ -51,6 +51,7 @@ public class ClosestPairOfPoints {
         strip.sort(Comparator.comparingDouble(p -> p.y));
         for (int i = 0; i < strip.size(); i++) {
             for (int j = i + 1; j < strip.size() && (strip.get(j).y - strip.get(i).y) < best.dist; j++) {
+                if (j - i > 7) break;
                 double dist = dist(strip.get(i), strip.get(j));
                 if (dist < best.dist) {
                     best = new Result(strip.get(i), strip.get(j), dist);
