@@ -1,25 +1,35 @@
 package assignment1.util;
 
 import java.util.*;
+import assignment1.metrics.*;
 
 public class Metrics {
-    public long comparisons = 0;
-    public long swaps = 0;
-    public long recDepth = 0;
-    public long maxDepth = 0;
+    private final Counter comparisons = new Counter();
+    private final Counter swaps = new Counter();
+    private final DepthTracker depthTracker = new DepthTracker();
 
-    public void incComp() {comparisons++;}
-    public void incSwap() {swaps++;}
+    public void incComp() {comparisons.increment();}
+    public void incSwap() {swaps.increment();}
+    public void addComp(long value) {comparisons.add(value);}
+    public void addSwap(long value) {swaps.add(value);}
 
-    public void enterRec() {recDepth++; maxDepth = Math.max(maxDepth, recDepth);}
-    public void exitRec() {recDepth--; }
+
+    public void enterRec() {depthTracker.enter(); }
+    public void exitRec() {depthTracker.exit(); }
+
+
+    public long getComparisons() {return comparisons.get();}
+    public long getSwaps() {return swaps.get();}
+    public int getMaxDepth() {return depthTracker.getMaxDepth();}
 
     public void reset() {
-        comparisons = swaps = recDepth = maxDepth = 0;
+        comparisons.reset();
+        swaps.reset();
+        depthTracker.reset();
     }
 
     @Override
     public String toString() {
-        return "comparisons = " + comparisons + ", swaps = " + swaps + ", maxDepth = " + maxDepth;
+        return String.format("comparisons=%d, swaps=%d, MaxDepth=%d", comparisons.get(), swaps.get(), depthTracker.getMaxDepth());
     }
 }

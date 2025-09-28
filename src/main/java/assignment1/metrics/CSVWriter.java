@@ -8,11 +8,11 @@ public class CSVWriter implements AutoCloseable {
 
     public CSVWriter(String filePath) throws IOException {
         this.writer = new FileWriter(filePath);
-        writer.write("algorithm,n,comparisons,swaps,maxDepth\n");
+        writer.write("algorithm, n, comparisons, swaps, maxDepth\n");
     }
 
     public void writeRecord(String algorithm, int n, long comparisons, long swaps, int maxDepth) throws IOException {
-        writer.write(String.format("%s,%d,%d,%d,%d\n", algorithm, n, comparisons, swaps, maxDepth));
+        writer.write(String.format("%s, %d, %d, %d, %d\n", algorithm, n, comparisons, swaps, maxDepth));
     }
 
     @Override
