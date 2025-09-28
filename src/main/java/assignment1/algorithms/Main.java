@@ -14,12 +14,24 @@ public class Main {
         String output = "result.csv";
         int k = 5;
 
-        for(int i = 0; i < args.length; i++){
-            switch (args[i]){
-                case "--algo": algo = args[++i]; break;
-                case "--size": size = Integer.parseInt(args[++i]); break;
-                case "--output": output = args[++i]; break;
-                case "--k": k = Integer.parseInt(args[++i]); break;
+        if (args.length > 0){
+            for(int i = 0; i < args.length; i++){
+                switch (args[i]){
+                    case "--algo": algo = args[++i]; break;
+                    case "--size": size = Integer.parseInt(args[++i]); break;
+                    case "--output": output = args[++i]; break;
+                    case "--k": k = Integer.parseInt(args[++i]); break;
+                }
+            }
+        }
+        else{
+            Scanner in = new Scanner(System.in);
+            System.out.println("Choose algorithm: mergesort, quicksort, select, closest: ");
+            algo = in.nextLine().trim().toLowerCase();
+
+            if (algo.equals("mergesort") ||  algo.equals("quicksort") ||  algo.equals("select")){
+                System.out.println("Enter array size: ");
+                size = in.nextInt();
             }
         }
 
@@ -32,7 +44,7 @@ public class Main {
                     Shuffle.shuffle(arr1);
                     MergeSort ms = new MergeSort(metrics);
                     ms.mergeSort(arr1);
-                    System.out.println("Merge sort result: ");
+                    System.out.println("\nMerge sort result: ");
                     System.out.print(Arrays.toString(arr1));
                     System.out.println("\nMetrics of MergeSort: " + metrics);
                     writer.writeRecord("\nMergeSort", arr1.length,
@@ -45,7 +57,7 @@ public class Main {
                     Shuffle.shuffle(arr2);
                     QuickSort qs = new QuickSort(metrics);
                     qs.quickSort(arr2);
-                    System.out.println("QuickSort result: ");
+                    System.out.println("\nQuickSort result: ");
                     System.out.print(Arrays.toString(arr2));
                     System.out.println("\nMetrics of QuickSort: " + metrics);
                     writer.writeRecord("QuickSort", arr2.length,
@@ -56,12 +68,18 @@ public class Main {
                 case "select":
                     int[] arr3 = new Random().ints(size, 0, 100).toArray();
                     DeterministicSelect ds = new DeterministicSelect(metrics);
-                    System.out.println("Array: " + Arrays.toString(arr3));
-                    System.out.print("Enter the number of elements in the array: ");
-                    Scanner in = new Scanner(System.in);
-                    int n = in.nextInt() - 1;
-                    int nthElement = ds.deterministicSelect(arr3.clone(), n);
-                    System.out.println((k + 1) + "-th element is: " + nthElement);
+                    System.out.println("\nArray: " + Arrays.toString(arr3));
+                    int queryK;
+                    if (args.length > 0){
+                        queryK = k;
+                    }
+                    else{
+                        Scanner in = new Scanner(System.in);
+                        System.out.print("Enter the number of elements in the array: ");
+                        queryK = in.nextInt() - 1;
+                    }
+                    int kthElement = ds.deterministicSelect(arr3.clone(), queryK);
+                    System.out.println((queryK + 1) + "-th element is: " + kthElement);
                     System.out.println("Metrics of Select: " + metrics);
                     writer.writeRecord("Select", arr3.length,
                             metrics.getComparisons(),
@@ -76,11 +94,17 @@ public class Main {
                             new ClosestPairOfPoints.Point(40, 50),
                             new ClosestPairOfPoints.Point(5, 1),
                             new ClosestPairOfPoints.Point(12, 10),
-                            new ClosestPairOfPoints.Point(3, 4)
+                            new ClosestPairOfPoints.Point(3, 4),
+                            new ClosestPairOfPoints.Point(7, 3),
+                            new ClosestPairOfPoints.Point(12, 3),
+                            new ClosestPairOfPoints.Point(80, 9),
+                            new ClosestPairOfPoints.Point(1, 1),
+                            new ClosestPairOfPoints.Point(12, 40),
+                            new ClosestPairOfPoints.Point(1, 50)
                     };
                     ClosestPairOfPoints cp = new ClosestPairOfPoints(metrics);
                     ClosestPairOfPoints.Result result = cp.closest(points);
-                    System.out.println("Closest Pair Of Points result: " + result.p1 + " and " + result.p2);
+                    System.out.println("\nClosest Pair Of Points result: " + result.p1 + " and " + result.p2);
                     System.out.println("Distance = " + result.dist);
                     System.out.println("Metrics of ClosestPairOfPoints: " + metrics);
                     System.out.println(" ");

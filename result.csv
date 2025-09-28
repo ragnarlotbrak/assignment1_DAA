@@ -1,6 +1,2 @@
 algorithm, n, comparisons, swaps, maxDepth
-
-MergeSort, 50, 139, 300, 11
-QuickSort, 50, 358, 83, 4
-Select, 20, 0, 0, 5
-ClosestPairOfPoints, 6, 6, 0, 1
+QuickSort, 20000, 316814, 101667, 11
