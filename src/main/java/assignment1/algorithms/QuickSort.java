@@ -2,25 +2,43 @@ package assignment1.algorithms;
 
 import assignment1.util.Swap;
 import java.util.Random;
+import assignment1.util.Metrics;
 
 public class QuickSort {
+
+    private final Metrics metrics;
+
     private final Random rand = new Random();
+
+    public QuickSort(Metrics metrics) {
+        this.metrics = metrics;
+    }
 
     public void quickSort(int[] arr) {
         quickSort(arr, 0, arr.length - 1);
     }
 
     private void quickSort(int[] arr, int low, int high) {
+        metrics.enterRec();
         while (low < high) {
             int pivotIndex = low + rand.nextInt(high - low + 1);
             int pivot = arr[pivotIndex];
             int i = low, j = high;
 
             while (i <= j) {
-                while (arr[i] < pivot) i++;
-                while (arr[j] > pivot) j--;
+                while (true) {
+                    metrics.incComp();
+                    if (!(arr[i] < pivot)) break;
+                    i++;
+                }
+                while (true) {
+                    metrics.incComp();
+                    if (!(arr[j] > pivot)) break;
+                    j--;
+                }
                 if (i <= j) {
                     Swap.swap(arr, i, j);
+                    metrics.incSwap();
                     i++;
                     j--;
                 }
@@ -34,5 +52,6 @@ public class QuickSort {
                 high = j;
             }
         }
+        metrics.exitRec();
     }
 }
