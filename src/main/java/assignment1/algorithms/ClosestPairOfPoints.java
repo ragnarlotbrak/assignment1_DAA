@@ -1,7 +1,15 @@
 package assignment1.algorithms;
+
 import java.util.*;
+import assignment1.util.*;
 
 public class ClosestPairOfPoints {
+
+    private final Metrics metrics;
+
+    public ClosestPairOfPoints(Metrics metrics) {
+        this.metrics = metrics;
+    }
 
     public static class Point {
         double x, y;
@@ -25,13 +33,14 @@ public class ClosestPairOfPoints {
         }
     }
 
-    private static double dist(Point a, Point b) {
+    private double dist(Point a, Point b) {
+        metrics.incComp();
         double dx = a.x - b.x;
         double dy = a.y - b.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    private static Result bruteForce(Point[] points, int left, int right) {
+    private Result bruteForce(Point[] points, int left, int right) {
         double min = Double.POSITIVE_INFINITY;
         Point p1 = null, p2 = null;
         for (int i = left; i < right; i++) {
@@ -47,7 +56,7 @@ public class ClosestPairOfPoints {
         return new Result(p1, p2, min);
     }
 
-    private static Result stripClosest(List<Point> strip, double d, Result best) {
+    private Result stripClosest(List<Point> strip, double d, Result best) {
         strip.sort(Comparator.comparingDouble(p -> p.y));
         for (int i = 0; i < strip.size(); i++) {
             for (int j = i + 1; j < strip.size() && (strip.get(j).y - strip.get(i).y) < best.dist; j++) {
@@ -61,10 +70,12 @@ public class ClosestPairOfPoints {
         return best;
     }
 
-    private static Result closestUtil(Point[] points, int left, int right) {
+    private Result closestUtil(Point[] points, int left, int right) {
         if (right - left <= 3) {
             return bruteForce(points, left, right);
         }
+
+        metrics.enterRec();
 
         int mid = (left + right) / 2;
         Point midPoint = points[mid];
@@ -81,10 +92,13 @@ public class ClosestPairOfPoints {
             }
         }
 
-        return stripClosest(strip, best.dist, best);
+        Result result = stripClosest(strip, best.dist, best);
+
+        metrics.exitRec();
+        return result;
     }
 
-    public static Result closest(Point[] points) {
+    public Result closest(Point[] points) {
         Arrays.sort(points, Comparator.comparingDouble(p -> p.x));
         return closestUtil(points, 0, points.length - 1);
     }
