@@ -4,20 +4,38 @@ import java.util.Arrays;
 import assignment1.util.*;
 
 class DeterministicSelect {
+    private final Metrics metrics;
+
     public int deterministicSelect(int[] arr, int k) {
         Guards.check(arr, k);
         return select(arr, 0, arr.length - 1, k);
     }
 
+    public DeterministicSelect(Metrics metrics) {
+        this.metrics = metrics;
+    }
+
     private int select(int[] arr, int left, int right, int k) {
         if (left == right) return arr[left];
+
+        metrics.enterRec();
 
         int pivot = medianOfMedians(arr, left, right);
         int pivotIndex = Partition.partition(arr, left, right, pivot);
 
-        if (k == pivotIndex) return arr[k];
-        else if (k < pivotIndex) return select(arr, left, pivotIndex - 1, k);
-        else return select(arr, pivotIndex + 1, right, k);
+        int result;
+        if (k == pivotIndex) {
+            result = arr[k];
+        }
+        else if (k < pivotIndex) {
+            result = select(arr, left, pivotIndex - 1, k);
+        }
+        else {
+            result = select(arr, pivotIndex + 1, right, k);
+        }
+
+        metrics.exitRec();
+        return result;
     }
 
     private int medianOfMedians(int[] arr, int left, int right) {
