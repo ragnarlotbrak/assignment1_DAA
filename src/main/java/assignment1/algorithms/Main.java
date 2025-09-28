@@ -28,11 +28,9 @@ public class Main {
             Scanner in = new Scanner(System.in);
             System.out.println("Choose algorithm: mergesort, quicksort, select, closest: ");
             algo = in.nextLine().trim().toLowerCase();
+            System.out.println("Enter array size: ");
+            size = in.nextInt();
 
-            if (algo.equals("mergesort") ||  algo.equals("quicksort") ||  algo.equals("select")){
-                System.out.println("Enter array size: ");
-                size = in.nextInt();
-            }
         }
 
         Metrics metrics = new Metrics();
@@ -40,6 +38,7 @@ public class Main {
         try (CSVWriter writer = new CSVWriter(output)) {
             switch(algo.toLowerCase()){
                 case "mergesort":
+                    metrics.reset();
                     int[] arr1 = new Random().ints(size, 0, 100).toArray();
                     Shuffle.shuffle(arr1);
                     MergeSort ms = new MergeSort(metrics);
@@ -53,6 +52,7 @@ public class Main {
                             metrics.getMaxDepth());
                     break;
                 case "quicksort":
+                    metrics.reset();
                     int[] arr2 = new Random().ints(size, 0, 100).toArray();
                     Shuffle.shuffle(arr2);
                     QuickSort qs = new QuickSort(metrics);
@@ -66,6 +66,7 @@ public class Main {
                             metrics.getMaxDepth());
                     break;
                 case "select":
+                    metrics.reset();
                     int[] arr3 = new Random().ints(size, 0, 100).toArray();
                     DeterministicSelect ds = new DeterministicSelect(metrics);
                     System.out.println("\nArray: " + Arrays.toString(arr3));
@@ -88,20 +89,12 @@ public class Main {
                     break;
 
                 case "closest":
-                    ClosestPairOfPoints.Point[] points = {
-                            new ClosestPairOfPoints.Point(2, 3),
-                            new ClosestPairOfPoints.Point(12, 30),
-                            new ClosestPairOfPoints.Point(40, 50),
-                            new ClosestPairOfPoints.Point(5, 1),
-                            new ClosestPairOfPoints.Point(12, 10),
-                            new ClosestPairOfPoints.Point(3, 4),
-                            new ClosestPairOfPoints.Point(7, 3),
-                            new ClosestPairOfPoints.Point(12, 3),
-                            new ClosestPairOfPoints.Point(80, 9),
-                            new ClosestPairOfPoints.Point(1, 1),
-                            new ClosestPairOfPoints.Point(12, 40),
-                            new ClosestPairOfPoints.Point(1, 50)
-                    };
+                    metrics.reset();
+                    Random random = new Random();
+                    ClosestPairOfPoints.Point[] points = new ClosestPairOfPoints.Point[size];
+                    for (int i = 0; i < size; i++){
+                        points[i] = new ClosestPairOfPoints.Point(random.nextInt(1000), random.nextInt(1000));
+                    }
                     ClosestPairOfPoints cp = new ClosestPairOfPoints(metrics);
                     ClosestPairOfPoints.Result result = cp.closest(points);
                     System.out.println("\nClosest Pair Of Points result: " + result.p1 + " and " + result.p2);

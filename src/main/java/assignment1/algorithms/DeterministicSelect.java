@@ -3,7 +3,7 @@ package assignment1.algorithms;
 import java.util.Arrays;
 import assignment1.util.*;
 
-class DeterministicSelect {
+public class DeterministicSelect {
     private final Metrics metrics;
 
     public int deterministicSelect(int[] arr, int k) {

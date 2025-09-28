@@ -1,0 +1,2 @@
+JMH S 33 assignment1.bench.SelectBenchmark S 75 assignment1.bench.jmh_generated.SelectBenchmark_deterministicSelect_jmhTest S 19 deterministicSelect S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 4 size 3 16 xAAMAADAwAA===== 16 xAAMAADAwAAMAA== 16 1AAMAADAwAAMAA== U 12 MICROSECONDS E E 
+JMH S 33 assignment1.bench.SelectBenchmark S 67 assignment1.bench.jmh_generated.SelectBenchmark_sortAndPick_jmhTest S 11 sortAndPick S 11 AverageTime E A 1 1 1 E E E E E E E E E E E E E M 1 4 size 3 16 xAAMAADAwAA===== 16 xAAMAADAwAAMAA== 16 1AAMAADAwAAMAA== U 12 MICROSECONDS E E 

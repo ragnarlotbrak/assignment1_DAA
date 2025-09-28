@@ -24,7 +24,7 @@ public class ClosestPairOfPoints {
     }
 
     public static class Result {
-        Point p1, p2;
+        public Point p1, p2;
         double dist;
         Result(Point p1, Point p2, double dist) {
             this.p1 = p1;
